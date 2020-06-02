@@ -4,8 +4,11 @@ phases:
   install:
     commands:
       - yum update -y
-      - sudo amazon-linux-extras install docker -y
-      - sudo service docker start
+      - sudo yum install docker-ce  -y
+      - sudo yum install -y yum-utils device-mapper-persistent-data lvm2
+      - sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+      - sudo systemctl enable docker.service
+      - sudo systemctl start docker.service
 
 
 
