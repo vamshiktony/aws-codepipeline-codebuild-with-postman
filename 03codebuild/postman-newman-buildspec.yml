@@ -2,7 +2,7 @@ version: 0.2
 
 env:
   variables:
-    key: "S3_BUCKET"
+    key: codebuild23
 
 phases:
   install:
