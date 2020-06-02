@@ -1,0 +1,26 @@
+version: 0.2
+
+env:
+  variables:
+    key: codebuild23
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 10
+    commands: #https://learning.getpostman.com/docs/postman/collection-runs/command-line-integration-with-newman/
+      - npm install -g newman
+      - yum install -y jq
+      - apt install docker.io -y
+
+
+  build:
+    commands:
+      - echo Build started on `date` from dir `pwd`
+      - docker run -t owasp/zap2docker-weekly zap-baseline.py -t https://243gvx5a47.execute-api.us-east-2.amazonaws.com/prod 
+
+reports:
+  JUnitReports: # CodeBuild will create a report group called "SurefireReports".
+    files: #Store all of the files
+      - '**/*'
+    base-directory: '02postman/newman' # Location of the reports
