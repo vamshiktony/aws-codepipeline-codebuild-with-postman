@@ -1,24 +1,15 @@
 version: 0.2
 
-env:
-  variables:
-    key: codebuild23
-
 phases:
   install:
-    runtime-versions:
-      docker: 18
-    commands: #https://learning.getpostman.com/docs/postman/collection-runs/command-line-integration-with-newman/
-      - npm install -g newman
-      - yum install -y jq
-
-
+    commands:
+      - nohup /usr/local/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://127.0.0.1:2375 --storage-driver=overlay2&
+      - timeout 15 sh -c "until docker info; do echo .; sleep 1; done"
+  pre_build:
+    commands:
+      - docker build -t helloworld .
   build:
     commands:
-      - echo Build started on `date` from dir `pwd`
-   
-      
-  post_build:
-    commands:
-      - echo Build completed on `date`
-      - docker run -t owasp/zap2docker-weekly zap-baseline.py -t https://243gvx5a47.execute-api.us-east-2.amazonaws.com/prod 
+      - docker images
+      - docker run helloworld echo "Hello, World!"
+      - docker run -t owasp/zap2docker-weekly zap-baseline.py -t https://243gvx5a47.execute-api.us-east-2.amazonaws.com/prod
