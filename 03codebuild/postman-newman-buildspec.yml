@@ -8,9 +8,8 @@ phases:
       - timeout 15 sh -c "until docker info; do echo .; sleep 1; done"
   pre_build:
     commands:
-      - docker build -t helloworld .
+      - echo "hello"
   build:
     commands:
       - docker images
-      - docker run helloworld echo "Hello, World!"
       - docker run -t owasp/zap2docker-weekly zap-baseline.py -t https://243gvx5a47.execute-api.us-east-2.amazonaws.com/prod
