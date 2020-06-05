@@ -1,21 +1,21 @@
 version: 0.2
-
 phases:
   install:
-    commands:
-      - yum update -y
-      - sudo yum install docker-ce  -y
-      - sudo yum install -y yum-utils device-mapper-persistent-data lvm2
-      - sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-      - sudo systemctl enable docker.service
-      - sudo systemctl start docker.service
-
-
-
-  pre_build:
-    commands:
-      - echo "hello"
+	commands:
+  	- sudo nohup /usr/local/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://127.0.0.1:2375 --storage-driver=overlay2&
+  	- timeout 15 sh -c "until docker info; do echo .; sleep 1; done"
   build:
-    commands:
-      - docker images
-      - docker run -t owasp/zap2docker-weekly zap-baseline.py -t https://243gvx5a47.execute-api.us-east-2.amazonaws.com/prod
+	commands:
+  	- docker images
+  	- touch ajay
+  	- docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-weekly zap-baseline.py -t http://petstore-demo-endpoint.execute-api.com/petstore/pets
+      -g gen.conf -r testreport.html
+  	- docker images
+  	- docker ps -a
+  	- docker exec -it ajay54 /bin/bash
+  	- ls
+
+  post_build:
+	commands:
+  	- pwd
+  	- ls
