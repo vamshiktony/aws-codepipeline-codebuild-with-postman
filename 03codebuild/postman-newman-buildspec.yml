@@ -18,4 +18,4 @@ phases:
   build:
     commands:
       - docker images
-      - docker run -t owasp/zap2docker-weekly zap-baseline.py -t https://243gvx5a47.execute-api.us-east-2.amazonaws.com/prod
+      - docker run -t owasp/zap2docker-weekly zap-baseline.py -t https://1idcwzr8bi.execute-api.us-east-2.amazonaws.com/prod
